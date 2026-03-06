@@ -24,7 +24,7 @@ class UniversalSelector extends StatefulWidget {
   final Color? searchFieldBorderColor;
   final Color? cursorColor;
   final Color? hintTextColor;
-  final Color? previwContainerColor;
+  final Color? previewContainerColor;
   final Color? hoverColor;
   final double? borderRadius;
 
@@ -32,7 +32,7 @@ class UniversalSelector extends StatefulWidget {
     super.key,
     required this.items,
     this.locale,
-    this.previwContainerColor,
+    this.previewContainerColor,
     this.selectedItem,
     this.selectedItems = const [],
     this.onItemSelected,

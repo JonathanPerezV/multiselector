@@ -257,7 +257,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
       return _selectedItems.first.name;
     }
 
-    return '${_selectedItems.length} ${widget.selectedItemsText ?? locale == "es" ? "Items seleccionados" : "items selected"} ';
+    return '${_selectedItems.length} ${widget.selectedItemsText ?? (locale == "es" ? "Items seleccionados" : "items selected")} ';
   }
 
   void _showItemPicker() {

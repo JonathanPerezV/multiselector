@@ -134,7 +134,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   double get borderRadius => widget.borderRadius ?? _defaultBorderRadius;
   Color get previewTextContainerColor =>
       widget.previewTextContainerColor ?? _defaultTextColor;
-  Color get itemsTextColor => widget.itemsTextColor ?? _defaultTextColor
+  Color get itemsTextColor => widget.itemsTextColor ?? _defaultTextColor;
   String get locale => widget.locale ?? "en";
 
   @override

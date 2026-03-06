@@ -116,7 +116,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   Color get headerColor => widget.headerColor ?? _defaultHeaderColor;
   Color get textColor => widget.textColor ?? _defaultTextColor;
   Color get accentColor => widget.accentColor ?? _defaultAccentColor;
-  Color get previewContainerColor => widget.previewContainerColor ?? _defaultHeaderColor
+  Color get previewContainerColor => widget.previewContainerColor ?? _defaultHeaderColor;
   Color get searchFieldColor =>
       widget.searchFieldColor ?? _defaultSearchFieldColor;
   Color get searchFieldBorderColor =>
@@ -131,7 +131,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
-    FocusScope.of(context).unfocus();
+    //FocusScope.of(context).unfocus();
     _allItems = ItemData.getSortedItems(widget.items);
     _filteredItems = _allItems;
     _selectedItems = List.from(widget.selectedItems);
@@ -356,7 +356,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: widget.hintText ?? locale == "es" ? "Buscar items..." : 'Search items...'),
+                              hintText: widget.hintText ?? (locale == "es" ? "Buscar items..." : 'Search items...'),
                               hintStyle: TextStyle(
                                 color: hintTextColor,
                                 fontSize: 14,

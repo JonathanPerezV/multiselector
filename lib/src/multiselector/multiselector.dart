@@ -13,6 +13,7 @@ class UniversalSelector extends StatefulWidget {
   final bool showSubtitle;
   final bool isMultiSelect;
   final int? maxSelections;
+  final String locale;
 
   // UI Customization
   final Color? backgroundColor;
@@ -23,12 +24,15 @@ class UniversalSelector extends StatefulWidget {
   final Color? searchFieldBorderColor;
   final Color? cursorColor;
   final Color? hintTextColor;
+  final Color? previwContainerColor;
   final Color? hoverColor;
   final double? borderRadius;
 
   const UniversalSelector({
     super.key,
     required this.items,
+    required this.locale,
+    this.previwContainerColor,
     this.selectedItem,
     this.selectedItems = const [],
     this.onItemSelected,
@@ -125,6 +129,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   void initState() {
     super.initState();
     _searchController.addListener(_onSearchChanged);
+    FocusScope.of(context).unfocus();
     _allItems = ItemData.getSortedItems(widget.items);
     _filteredItems = _allItems;
     _selectedItems = List.from(widget.selectedItems);
@@ -237,7 +242,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
       return _selectedItems.first.name;
     }
 
-    return '${_selectedItems.length} items selected';
+    return '${_selectedItems.length} ${widget.locale == "es" ?  "Items seleccionados": "items selected"} ';
   }
 
   void _showItemPicker() {
@@ -313,7 +318,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                                   Navigator.of(context).pop();
                                 },
                                 child: Text(
-                                  'Done',
+                                  widget.locale == "es" ? "Hecho" : 'Done',
                                   style: TextStyle(
                                     color: accentColor,
                                     fontSize: 14,
@@ -349,7 +354,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: widget.hintText ?? 'Search items...',
+                              hintText: widget.hintText ?? (widget.locale == "es" ? "Buscar items..." : 'Search items...'),
                               hintStyle: TextStyle(
                                 color: hintTextColor,
                                 fontSize: 14,
@@ -522,7 +527,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
             decoration: BoxDecoration(
               border: Border.all(color: searchFieldBorderColor, width: 0.5),
               borderRadius: BorderRadius.circular(borderRadius),
-              color: searchFieldColor,
+              color: previewContainerColor ?? searchFieldColor,
             ),
             child: Row(
               children: [

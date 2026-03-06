@@ -470,7 +470,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                                               style: TextStyle(
                                                 color: isSelected
                                                     ? accentColor
-                                                    : textColor,
+                                                    : itemsTextColor,
                                                 fontWeight: isSelected
                                                     ? FontWeight.w600
                                                     : FontWeight.normal,
@@ -487,7 +487,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                                                       ? accentColor.withValues(
                                                           alpha: 0.7,
                                                         )
-                                                      : hintTextColor,
+                                                      : itemsTextColor,
                                                   fontSize: 12,
                                                 ),
                                               ),

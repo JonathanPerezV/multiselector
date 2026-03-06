@@ -12,6 +12,7 @@ class UniversalSelector extends StatefulWidget {
   final String? hintText;
   final bool showSubtitle;
   final bool isMultiSelect;
+  final bool sortList;
   final int? maxSelections;
   final String? locale;
 
@@ -25,6 +26,8 @@ class UniversalSelector extends StatefulWidget {
   final Color? cursorColor;
   final Color? hintTextColor;
   final Color? previewContainerColor;
+  final Color? previewTextContainerColor;
+  final Color? itemsTextColor;
   final Color? hoverColor;
   final double? borderRadius;
 
@@ -32,6 +35,8 @@ class UniversalSelector extends StatefulWidget {
     super.key,
     required this.items,
     this.locale,
+    this.previewTextContainerColor,
+    this.itemsTextColor,
     this.previewContainerColor,
     this.selectedItem,
     this.selectedItems = const [],
@@ -52,11 +57,12 @@ class UniversalSelector extends StatefulWidget {
     this.hintTextColor,
     this.hoverColor,
     this.borderRadius,
+    this.sortList = false
   }) : assert(
-         (!isMultiSelect && onItemSelected != null) ||
-             (isMultiSelect && onItemsSelected != null),
-         'onItemSelected must be provided for single-select mode, onItemsSelected must be provided for multi-select mode',
-       );
+          (!isMultiSelect && onItemSelected != null) ||
+              (isMultiSelect && onItemsSelected != null),
+          'onItemSelected must be provided for single-select mode, onItemsSelected must be provided for multi-select mode',
+        );
 
   @override
   State<UniversalSelector> createState() => _UniversalSelectorState();
@@ -116,7 +122,8 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   Color get headerColor => widget.headerColor ?? _defaultHeaderColor;
   Color get textColor => widget.textColor ?? _defaultTextColor;
   Color get accentColor => widget.accentColor ?? _defaultAccentColor;
-  Color get previewContainerColor => widget.previewContainerColor ?? _defaultHeaderColor;
+  Color get previewContainerColor =>
+      widget.previewContainerColor ?? _defaultHeaderColor;
   Color get searchFieldColor =>
       widget.searchFieldColor ?? _defaultSearchFieldColor;
   Color get searchFieldBorderColor =>
@@ -125,6 +132,9 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   Color get hintTextColor => widget.hintTextColor ?? _defaultHintTextColor;
   Color get hoverColor => widget.hoverColor ?? _defaultHoverColor;
   double get borderRadius => widget.borderRadius ?? _defaultBorderRadius;
+  Color get previewTextContainerColor =>
+      widget.previewTextContainerColor ?? _defaultTextColor;
+  Color get itemsTextColor => widget.itemsTextColor ?? _defaultTextColor
   String get locale => widget.locale ?? "en";
 
   @override
@@ -132,7 +142,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
     super.initState();
     _searchController.addListener(_onSearchChanged);
     //FocusScope.of(context).unfocus();
-    _allItems = ItemData.getSortedItems(widget.items);
+    _allItems =  widget.sortList ? ItemData.getSortedItems(widget.items) : widget.items;
     _filteredItems = _allItems;
     _selectedItems = List.from(widget.selectedItems);
     if (kDebugMode) {
@@ -244,10 +254,11 @@ class _UniversalSelectorState extends State<UniversalSelector> {
       return _selectedItems.first.name;
     }
 
-    return '${_selectedItems.length} ${locale == "es" ?  "Items seleccionados": "items selected"} ';
+    return '${_selectedItems.length} ${locale == "es" ? "Items seleccionados" : "items selected"} ';
   }
 
   void _showItemPicker() {
+    FocusScope.of(context).unfocus();
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
@@ -356,7 +367,10 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                               });
                             },
                             decoration: InputDecoration(
-                              hintText: widget.hintText ?? (locale == "es" ? "Buscar items..." : 'Search items...'),
+                              hintText: widget.hintText ??
+                                  (locale == "es"
+                                      ? "Buscar items..."
+                                      : 'Search items...'),
                               hintStyle: TextStyle(
                                 color: hintTextColor,
                                 fontSize: 14,
@@ -406,8 +420,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                       itemBuilder: (context, index) {
                         final item = _filteredItems[index];
                         final isSelected = _isItemSelected(item);
-                        final isMaxReached =
-                            widget.isMultiSelect &&
+                        final isMaxReached = widget.isMultiSelect &&
                             widget.maxSelections != null &&
                             _selectedItems.length >= widget.maxSelections! &&
                             !isSelected;
@@ -550,7 +563,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                       child: Text(
                         _getSelectedItemsText(),
                         style: TextStyle(
-                          color: textColor,
+                          color: previewTextContainerColor,
                           fontSize: 14,
                           fontWeight: FontWeight.w500,
                         ),
@@ -581,7 +594,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                         Text(
                           widget.selectedItem!.name,
                           style: TextStyle(
-                            color: textColor,
+                            color: itemsTextColor,
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -605,7 +618,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                   _spacer10,
                   Expanded(
                     child: Text(
-                      widget.hintText ?? 'Select an item',
+                      widget.hintText ?? ( locale == "es" ? "Seleccione un itemW" : 'Select an item'),
                       style: TextStyle(color: hintTextColor, fontSize: 14),
                     ),
                   ),

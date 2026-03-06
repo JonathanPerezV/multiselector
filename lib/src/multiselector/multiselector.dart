@@ -15,6 +15,7 @@ class UniversalSelector extends StatefulWidget {
   final bool sortList;
   final int? maxSelections;
   final String? locale;
+  final String? selectedItemsText;
 
   // UI Customization
   final Color? backgroundColor;
@@ -31,34 +32,35 @@ class UniversalSelector extends StatefulWidget {
   final Color? hoverColor;
   final double? borderRadius;
 
-  const UniversalSelector({
-    super.key,
-    required this.items,
-    this.locale,
-    this.previewTextContainerColor,
-    this.itemsTextColor,
-    this.previewContainerColor,
-    this.selectedItem,
-    this.selectedItems = const [],
-    this.onItemSelected,
-    this.onItemsSelected,
-    this.labelText,
-    this.hintText,
-    this.showSubtitle = true,
-    this.isMultiSelect = false,
-    this.maxSelections,
-    this.backgroundColor,
-    this.headerColor,
-    this.textColor,
-    this.accentColor,
-    this.searchFieldColor,
-    this.searchFieldBorderColor,
-    this.cursorColor,
-    this.hintTextColor,
-    this.hoverColor,
-    this.borderRadius,
-    this.sortList = false
-  }) : assert(
+  const UniversalSelector(
+      {super.key,
+      required this.items,
+      this.locale,
+      this.previewTextContainerColor,
+      this.itemsTextColor,
+      this.selectedItemsText,
+      this.previewContainerColor,
+      this.selectedItem,
+      this.selectedItems = const [],
+      this.onItemSelected,
+      this.onItemsSelected,
+      this.labelText,
+      this.hintText,
+      this.showSubtitle = true,
+      this.isMultiSelect = false,
+      this.maxSelections,
+      this.backgroundColor,
+      this.headerColor,
+      this.textColor,
+      this.accentColor,
+      this.searchFieldColor,
+      this.searchFieldBorderColor,
+      this.cursorColor,
+      this.hintTextColor,
+      this.hoverColor,
+      this.borderRadius,
+      this.sortList = false})
+      : assert(
           (!isMultiSelect && onItemSelected != null) ||
               (isMultiSelect && onItemsSelected != null),
           'onItemSelected must be provided for single-select mode, onItemsSelected must be provided for multi-select mode',
@@ -142,7 +144,8 @@ class _UniversalSelectorState extends State<UniversalSelector> {
     super.initState();
     _searchController.addListener(_onSearchChanged);
     //FocusScope.of(context).unfocus();
-    _allItems =  widget.sortList ? ItemData.getSortedItems(widget.items) : widget.items;
+    _allItems =
+        widget.sortList ? ItemData.getSortedItems(widget.items) : widget.items;
     _filteredItems = _allItems;
     _selectedItems = List.from(widget.selectedItems);
     if (kDebugMode) {
@@ -254,7 +257,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
       return _selectedItems.first.name;
     }
 
-    return '${_selectedItems.length} ${locale == "es" ? "Items seleccionados" : "items selected"} ';
+    return '${_selectedItems.length} ${widget.selectedItemsText ?? locale == "es" ? "Items seleccionados" : "items selected"} ';
   }
 
   void _showItemPicker() {
@@ -618,7 +621,10 @@ class _UniversalSelectorState extends State<UniversalSelector> {
                   _spacer10,
                   Expanded(
                     child: Text(
-                      widget.hintText ?? ( locale == "es" ? "Seleccione un itemW" : 'Select an item'),
+                      widget.hintText ??
+                          (locale == "es"
+                              ? "Seleccione un itemW"
+                              : 'Select an item'),
                       style: TextStyle(color: hintTextColor, fontSize: 14),
                     ),
                   ),

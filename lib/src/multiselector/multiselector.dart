@@ -116,7 +116,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
   Color get headerColor => widget.headerColor ?? _defaultHeaderColor;
   Color get textColor => widget.textColor ?? _defaultTextColor;
   Color get accentColor => widget.accentColor ?? _defaultAccentColor;
-  Color get previewContainerColor => widget.previewContainerColor ?? _defaultHeaderColor
+  Color get previewContainerColor => widget.previewContainerColor ?? _defaultHeaderColor;
   Color get searchFieldColor =>
       widget.searchFieldColor ?? _defaultSearchFieldColor;
   Color get searchFieldBorderColor =>
@@ -529,7 +529,7 @@ class _UniversalSelectorState extends State<UniversalSelector> {
             decoration: BoxDecoration(
               border: Border.all(color: searchFieldBorderColor, width: 0.5),
               borderRadius: BorderRadius.circular(borderRadius),
-              color: previewContainerColor ?? searchFieldColor,
+              color: Colors.orange,
             ),
             child: Row(
               children: [
